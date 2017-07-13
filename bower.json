@@ -1,0 +1,17 @@
+{
+  "name": "tscalendar",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Oshevchuk <megadevice83@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/oshevchuk/TsCalendar",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

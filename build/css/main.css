@@ -1,23 +1,16 @@
 body {
   margin: 0;
   padding: 0;
-
-  //overflow: hidden;
   display: block;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 .os-shedule {
   width: 100%;
   min-height: 100vh;
   margin: auto;
-  //background-color: white;
-  //font-family: Tahoma;
   font-size: 20px;
-  position: relative;
-  //overflow: hidden;
-
-  .os-nav {
+  position: relative; }
+  .os-shedule .os-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,9 +19,8 @@ body {
     left: 20px;
     top: 0;
     position: absolute;
-    color: #2f3a48;
-
-    button {
+    color: #2f3a48; }
+    .os-shedule .os-nav button {
       color: #454544;
       border: 1px solid #cecece;
       background-color: white;
@@ -36,31 +28,21 @@ body {
       padding-left: 20px;
       padding-right: 20px;
       margin: 0;
-      border-radius: 4px;
-
-      &:hover {
-        background-color: rgb(220, 220, 220);
-      }
-    }
-
-    .os-group {
-      display: inline-flex;
-      button {
+      border-radius: 4px; }
+      .os-shedule .os-nav button:hover {
+        background-color: gainsboro; }
+    .os-shedule .os-nav .os-group {
+      display: inline-flex; }
+      .os-shedule .os-nav .os-group button {
         border-radius: 0;
+        border-right: 0; }
+      .os-shedule .os-nav .os-group button:first-child {
         border-right: 0;
-      }
-      button:first-child {
-        border-right: 0;
-        border-radius: 4px 0 0 4px;
-      }
-      button:last-child {
+        border-radius: 4px 0 0 4px; }
+      .os-shedule .os-nav .os-group button:last-child {
         border-radius: 0 4px 4px 0;
-        border-right: 1px solid #cecece;
-      }
-    }
-  }
-
-  .os-cal-header {
+        border-right: 1px solid #cecece; }
+  .os-shedule .os-cal-header {
     border: 1px solid #cecece;
     border-left: none;
     border-bottom: none;
@@ -71,113 +53,90 @@ body {
     top: 60pt;
     display: flex;
     justify-content: space-around;
-    align-items: center;
-
-    .os-head-day {
+    align-items: center; }
+    .os-shedule .os-cal-header .os-head-day {
       font: 11px/16px Arial;
       color: #767676;
-      border-left: 1px solid #cecece;;
+      border-left: 1px solid #cecece;
       width: 100%;
       text-align: center;
-      line-height: 20px;
-    }
-  }
-
-  .os-cal-data {
-    //overflow: scroll;
+      line-height: 20px; }
+  .os-shedule .os-cal-data {
     position: absolute;
     width: calc(100vw - 56px);
-    //height: calc(100vh - 105px);
-    //height: 100%;
     top: 101px;
     left: 0;
-    border-top: 1px solid #cecece;;
-
-    .os-grid-root {
+    border-top: 1px solid #cecece; }
+    .os-shedule .os-cal-data .os-grid-root {
       position: absolute;
       left: 50px;
       box-sizing: content-box;
-      //height: calc(100vh - 105px);
       width: calc(100vw - 106px);
       height: 100%;
       display: flex;
-      justify-content: space-around;
-      //overflow-y: scroll;
-
-      .os-dhx-holder {
+      justify-content: space-around; }
+      .os-shedule .os-cal-data .os-grid-root .os-dhx-holder {
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-        border-left: 1px solid #cecece;
-      }
-      .os-dhx-holder:last-child{
-        border-right: 1px solid #cecece;
-      }
-    }
-
-    .os-timebar{
+        border-left: 1px solid #cecece; }
+      .os-shedule .os-cal-data .os-grid-root .os-dhx-holder:last-child {
+        border-right: 1px solid #cecece; }
+    .os-shedule .os-cal-data .os-timebar {
       height: 100%;
       color: #767676;
-      font: 11px/16px Arial;
-
-
-      .os-time {
+      font: 11px/16px Arial; }
+      .os-shedule .os-cal-data .os-timebar .os-time {
         border-bottom: 1px solid #c7d1cb;
         height: 4.16%;
         min-height: 40px;
         display: flex;
         align-items: center;
         padding-left: 10px;
-        position: relative;
-      }
-      .os-time:after{
+        position: relative; }
+      .os-shedule .os-cal-data .os-timebar .os-time:after {
         position: absolute;
-        top:50%;
+        top: 50%;
         left: 50px;
         content: "";
         display: block;
-        border-bottom: 1px solid rgb(230,230,230);
-        width: calc(100vw - 108px);
-      }
-    }
-  }
-
-  .os-event{
+        border-bottom: 1px solid #e6e6e6;
+        width: calc(100vw - 108px); }
+  .os-shedule .os-event {
     color: white;
     font: 12px/16px Arial;
-
     box-sizing: border-box;
     position: relative;
-    top:20%;
+    top: 20%;
     min-height: 50px;
     width: calc(100% - 8px);
-    background-color: rgb(23,150,176);
+    background-color: #1796b0;
     z-index: 20;
     border-radius: 4px;
-    margin: 4px;
-    //padding: 5px;
-
-    .os-title{
+    margin: 4px; }
+    .os-shedule .os-event .os-title {
       text-align: center;
-      font-weight: bold;
-    }
-
-    span{
+      font-weight: bold; }
+    .os-shedule .os-event span {
       display: block;
-      padding: 5px;
-    }
-
-    .os-resize{
+      padding: 5px; }
+    .os-shedule .os-event .os-resize {
       width: 100%;
       height: 5px;
-      background-color: rgb(23,150,176);
-      border-radius: 4px;
-
-      &:hover{
-        background-color: rgb(3,130,156);
-        cursor: n-resize;
-      }
-      &:before{
+      background-color: #1796b0;
+      border-radius: 4px; }
+      .os-shedule .os-event .os-resize:hover {
+        background-color: #03829c;
+        cursor: n-resize; }
+      .os-shedule .os-event .os-resize:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 1px;
+        background-color: white;
+        left: calc(50% - 15px); }
+      .os-shedule .os-event .os-resize:after {
         content: "";
         display: block;
         position: absolute;
@@ -185,37 +144,19 @@ body {
         height: 1px;
         background-color: white;
         left: calc(50% - 15px);
-      }
-      &:after{
-        content: "";
-        display: block;
-        position: absolute;
-        width: 30px;
-        height: 1px;
-        background-color: white;
-        left: calc(50% - 15px);
-        margin-top: 2px;
-      }
-    }
-
-
-    .os-controlls{
+        margin-top: 2px; }
+    .os-shedule .os-event .os-controlls {
       position: absolute;
       left: -25px;
-      top:0;
-      color: black;
-
-      a{
+      top: 0;
+      color: black; }
+      .os-shedule .os-event .os-controlls a {
         display: block;
         text-align: center;
-        background-color: rgb(23,150,176);
+        background-color: #1796b0;
         padding: 4px;
         min-width: 15px;
         max-width: 15px;
         margin: 1px;
         border-radius: 4px;
-        color: white;
-      }
-    }
-  }
-}
+        color: white; }

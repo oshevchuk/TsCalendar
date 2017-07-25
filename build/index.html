@@ -4,8 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 </head>
 <body>
 <div class="os-shedule">
@@ -19,8 +28,8 @@
         <div>
             <button>Today</button>
             <div class="os-group">
-                <button><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                <button><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                <button onclick="nextWeek()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                <button onclick="prevWeek()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
@@ -34,7 +43,7 @@
         <div class="os-head-day">Sun, January 7</div>
     </div>
     <div class="os-cal-data">
-        <div class="os-grid-root">
+        <div class="os-grid-root" id="os-root">
             <div class="os-dhx-holder"></div>
             <div class="os-dhx-holder"></div>
             <div class="os-dhx-holder">
@@ -45,7 +54,17 @@
                     <div class="os-controlls">
                         <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                         <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <a class="os-remove"> <i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="os-event">
+                    <div class="os-title">03:05-04:55</div>
+                    <span>Test mission for mission is imposible to posible</span>
+                    <div class="os-resize"></div>
+                    <div class="os-controlls">
+                        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>
+                        <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
@@ -55,14 +74,14 @@
             <div class="os-dhx-holder"></div>
         </div>
         <div class="os-timebar">
-            <div class="os-time">00:00</div>
-            <div class="os-time">01:00</div>
-            <div class="os-time">02:00</div>
-            <div class="os-time">03:00</div>
-            <div class="os-time">04:00</div>
-            <div class="os-time">05:00</div>
-            <div class="os-time">06:00</div>
-            <div class="os-time">07:00</div>
+            <!--<div class="os-time">00:00</div>-->
+            <!--<div class="os-time">01:00</div>-->
+            <!--<div class="os-time">02:00</div>-->
+            <!--<div class="os-time">03:00</div>-->
+            <!--<div class="os-time">04:00</div>-->
+            <!--<div class="os-time">05:00</div>-->
+            <!--<div class="os-time">06:00</div>-->
+            <!--<div class="os-time">07:00</div>-->
             <div class="os-time">08:00</div>
             <div class="os-time">09:00</div>
             <div class="os-time">10:00</div>
@@ -77,8 +96,70 @@
             <div class="os-time">19:00</div>
             <div class="os-time">20:00</div>
             <div class="os-time">21:00</div>
-            <div class="os-time">22:00</div>
-            <div class="os-time">23:00</div>
+            <!--<div class="os-time">22:00</div>-->
+            <!--<div class="os-time">23:00</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="os-modal-overlay">
+    <div class="os-modal">
+        <div class="os-modal-header"><span>03:10 - 03:15</span> New event</div>
+        <div class="os-modal-body">
+            <span>Description:</span>
+            <textarea name="" id="" cols="30" rows="10">new event description</textarea>
+        </div>
+        <div class="os-modal-time-period">
+            <span>Time poriod</span>
+            <select>
+                <option value="volvo">10:10</option>
+                <option value="saab">11:30</option>
+                <option value="mercedes">12:40</option>
+                <option value="audi">15:20</option>
+            </select>
+            <select>
+                <option value="volvo">3</option>
+                <option value="saab">4</option>
+                <option value="mercedes">5</option>
+                <option value="audi">6</option>
+            </select>
+            <select>
+                <option value="volvo">January</option>
+                <option value="saab">July</option>
+                <option value="mercedes">May</option>
+            </select>
+            <select>
+                <option value="volvo">2017</option>
+                <option value="saab">2018</option>
+                <option value="mercedes">2019</option>
+            </select>
+            <span>--</span>
+            <select>
+                <option value="volvo">10:10</option>
+                <option value="saab">11:30</option>
+                <option value="mercedes">12:40</option>
+                <option value="audi">15:20</option>
+            </select>
+            <select>
+                <option value="volvo">3</option>
+                <option value="saab">4</option>
+                <option value="mercedes">5</option>
+                <option value="audi">6</option>
+            </select>
+            <select>
+                <option value="volvo">January</option>
+                <option value="saab">July</option>
+                <option value="mercedes">May</option>
+            </select>
+            <select>
+                <option value="volvo">2017</option>
+                <option value="saab">2018</option>
+                <option value="mercedes">2019</option>
+            </select>
+        </div>
+        <div class="os-modal-footer">
+            <span><button>Save</button><button class="os-close-modal">Cancel</button></span>
+            <button>Delete</button>
         </div>
     </div>
 </div>

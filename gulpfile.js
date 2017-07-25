@@ -16,6 +16,7 @@ var sourcemaps = require('gulp-sourcemaps');
 // var jshint = require('gulp-jshint');
 // var source = require('vinyl-source-stream');
 // var tsify = require('tsify');
+// var bundle = require('gulp-bundle-assets');
 
 
 var browserSync = require("browser-sync");
@@ -58,7 +59,7 @@ var config = {
     tunnel: true,
     host: 'localhost',
     port: 9000,
-    logPrefix: "Frontend_Devil"
+    logPrefix: "OS"
 };
 
 gulp.task('sass', function () {
@@ -80,14 +81,21 @@ gulp.task('html:build', function () {
 });
 
 gulp.task('js:build', function () {
-    gulp.src(path.src.js) //Найдем наш main файл
-        .pipe(rigger()) //Прогоним через rigger
-        .pipe(sourcemaps.init()) //Инициализируем sourcemap
-        .pipe(uglify()) //Сожмем наш js
-        .pipe(sourcemaps.write()) //Пропишем карты
+    return gulp.src(path.src.js) //Найдем наш main файл
+
         .pipe(gulp.dest(path.build.js)) //Выплюнем готовый файл в build
         .pipe(reload({stream: true})); //И перезагрузим сервер
 });
+//
+// gulp.task('js:build', function () {
+//     gulp.src(path.src.js) //Найдем наш main файл
+//         .pipe(rigger()) //Прогоним через rigger
+//         .pipe(sourcemaps.init()) //Инициализируем sourcemap
+//         .pipe(uglify()) //Сожмем наш js
+//         .pipe(sourcemaps.write()) //Пропишем карты
+//         .pipe(gulp.dest(path.build.js)) //Выплюнем готовый файл в build
+//         .pipe(reload({stream: true})); //И перезагрузим сервер
+// });
 
 
 gulp.task('image:build', function () {

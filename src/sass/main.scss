@@ -64,7 +64,7 @@ body {
     border: 1px solid #cecece;
     border-left: none;
     border-bottom: none;
-    width: calc(100% - 90px);
+    width: calc(100vw - 107px);
     height: 20px;
     position: absolute;
     left: 50px;
@@ -95,6 +95,7 @@ body {
 
     .os-grid-root {
       position: absolute;
+      z-index: 2;
       left: 50px;
       box-sizing: content-box;
       //height: calc(100vh - 105px);
@@ -106,20 +107,21 @@ body {
 
       .os-dhx-holder {
         box-sizing: border-box;
+        position: relative;
         width: 100%;
+        min-width: 100px;
         height: 100%;
         border-left: 1px solid #cecece;
       }
-      .os-dhx-holder:last-child{
+      .os-dhx-holder:last-child {
         border-right: 1px solid #cecece;
       }
     }
 
-    .os-timebar{
+    .os-timebar {
       height: 100%;
       color: #767676;
       font: 11px/16px Arial;
-
 
       .os-time {
         border-bottom: 1px solid #c7d1cb;
@@ -130,54 +132,57 @@ body {
         padding-left: 10px;
         position: relative;
       }
-      .os-time:after{
+      .os-time:after {
         position: absolute;
-        top:50%;
+        top: 50%;
         left: 50px;
         content: "";
         display: block;
-        border-bottom: 1px solid rgb(230,230,230);
+        border-bottom: 1px solid rgb(230, 230, 230);
         width: calc(100vw - 108px);
       }
     }
   }
 
-  .os-event{
+  .os-event {
     color: white;
     font: 12px/16px Arial;
 
     box-sizing: border-box;
-    position: relative;
-    top:20%;
+    //position: relative;
+    position: absolute;
+    top: 20%;
     min-height: 50px;
-    width: calc(100% - 8px);
-    background-color: rgb(23,150,176);
+    width: calc(100% - 6px);
+    background-color: rgb(23, 150, 176);
     z-index: 20;
     border-radius: 4px;
-    margin: 4px;
+    margin: 3px;
     //padding: 5px;
 
-    .os-title{
+    .os-title {
       text-align: center;
       font-weight: bold;
     }
 
-    span{
+    span {
       display: block;
       padding: 5px;
     }
 
-    .os-resize{
+    .os-resize {
       width: 100%;
       height: 5px;
-      background-color: rgb(23,150,176);
+      background-color: rgb(23, 150, 176);
       border-radius: 4px;
+      position: absolute;
+      bottom: 0;
 
-      &:hover{
-        background-color: rgb(3,130,156);
+      &:hover {
+        background-color: rgb(3, 130, 156);
         cursor: n-resize;
       }
-      &:before{
+      &:before {
         content: "";
         display: block;
         position: absolute;
@@ -186,7 +191,7 @@ body {
         background-color: white;
         left: calc(50% - 15px);
       }
-      &:after{
+      &:after {
         content: "";
         display: block;
         position: absolute;
@@ -198,23 +203,104 @@ body {
       }
     }
 
+    .ui-icon-gripsmall-diagonal-se, .ui-resizable-e {
+      display: none !important;
+    }
+    .ui-resizable-s {
+      bottom: 0;
+    }
 
-    .os-controlls{
+    .os-controlls {
       position: absolute;
       left: -25px;
-      top:0;
+      top: 0;
       color: black;
-
-      a{
+      display: none;
+      a {
         display: block;
         text-align: center;
-        background-color: rgb(23,150,176);
+        background-color: rgb(23, 150, 176);
         padding: 4px;
         min-width: 15px;
         max-width: 15px;
         margin: 1px;
         border-radius: 4px;
         color: white;
+      }
+    }
+  }
+}
+
+//
+.os-modal-overlay {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(0,0,0,0.2);
+  z-index: 3;
+
+  .os-modal {
+    background-color: white;
+    border: 1px solid rgb(200,200,200);
+    min-width: 600px;
+    min-height: 200px;
+    position: absolute;
+    top: 30%;
+    left: calc(50vw - 300px);
+    z-index: 30;
+    border-radius: 5px;
+
+    .os-modal-header{
+      border-bottom: 1px solid rgb(230,230,230);
+      padding: 5px 20px;
+      font-size: 14px;
+
+      span{
+        font-weight: bold;
+        margin-right: 20px;
+      }
+    }
+
+    .os-modal-body{
+      padding: 5px 15px;
+      span{
+        display: block;
+      }
+      textarea{
+        display: block;
+        width: 100%;
+        height: 100px;
+      }
+    }
+    .os-modal-time-period{
+      padding: 5px 15px;
+      text-align: center;
+      border-bottom: 1px solid rgb(230,230,230);
+      border-top: 1px solid rgb(230,230,230);
+    }
+    .os-modal-footer{
+      padding: 5px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button{
+        border-radius: 4px;
+        margin: 3px;
+        border: none;
+        padding: 5px 15px;
+
+        &:first-child{
+          background-color: #4a90e2;
+        }
+        &:last-child {
+          background-color: green;
+        }
+        .os-close-modal{
+          background-color: white;
+        }
       }
     }
   }

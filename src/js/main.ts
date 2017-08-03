@@ -8,7 +8,6 @@ declare let $;
 let provide;
 
 $(function () {
-    // alert(1);
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
@@ -54,13 +53,6 @@ $(function () {
         })
             .css({"top": e.offsetY});
     });
-    // $('.os-dhx-holder').on('click', function (e) {
-    //     console.log(e);
-
-    // $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
-    // });
-
-
 });
 
 $('.os-dhx-holder').on('click', '.os-remove', function (e) {
@@ -134,7 +126,41 @@ class DateProvide {
     }
 }
 
+class Day{
+    start:number=9;
+    end:number=18;
+    public Day:Date;
+    public events:CalendarEvent[];
+
+    constructor(){
+        this.events=[];
+    }
+
+    addEvent(event:CalendarEvent){
+        this.events.push(event);
+    }
+    
+    editEventTime(event:CalendarEvent, start, end){
+        let index=this.events.indexOf(event);
+        if(index> -1){
+            
+        }
+    }
+
+    removeEvent(event:CalendarEvent){
+        let index=this.events.indexOf(event);
+        if(index>-1) {
+            this.events.splice(index, 1);
+        }
+    }
+
+    checkAviability(){
+
+    }
+}
+
 class CalendarEvent {
+    public id:Number;
     public startData:Date;
     public endData:Date;
     public description:string;

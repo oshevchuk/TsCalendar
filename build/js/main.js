@@ -4,7 +4,6 @@
  */
 var provide;
 $(function () {
-    // alert(1);
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
@@ -47,10 +46,6 @@ $(function () {
         })
             .css({ "top": e.offsetY });
     });
-    // $('.os-dhx-holder').on('click', function (e) {
-    //     console.log(e);
-    // $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
-    // });
 });
 $('.os-dhx-holder').on('click', '.os-remove', function (e) {
     $(this).parent().parent().remove();
@@ -105,6 +100,30 @@ var DateProvide = (function () {
     DateProvide.days = ["Sun", 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     DateProvide.mons = ["January", 'February', 'March', 'Aprill', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return DateProvide;
+}());
+var Day = (function () {
+    function Day() {
+        this.start = 9;
+        this.end = 18;
+        this.events = [];
+    }
+    Day.prototype.addEvent = function (event) {
+        this.events.push(event);
+    };
+    Day.prototype.editEventTime = function (event, start, end) {
+        var index = this.events.indexOf(event);
+        if (index > -1) {
+        }
+    };
+    Day.prototype.removeEvent = function (event) {
+        var index = this.events.indexOf(event);
+        if (index > -1) {
+            this.events.splice(index, 1);
+        }
+    };
+    Day.prototype.checkAviability = function () {
+    };
+    return Day;
 }());
 var CalendarEvent = (function () {
     function CalendarEvent(startData, endData, description) {

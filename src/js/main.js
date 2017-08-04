@@ -10,7 +10,7 @@ var data_start = 8;
 var data_end = 21;
 $(function () {
     timespan = data_end - data_start + 1;
-    data_height = $('.os-dhx-holder').height();
+    data_height = $('.os-dhx-holder').height() - 6;
     data_offset = $('.os-dhx-holder').offset().top;
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
@@ -18,12 +18,15 @@ $(function () {
         axis: "y",
         drag: function (event, ui) {
             var offset = $(this).offset();
+            offset.top -= data_offset + 3;
             var element_height = $(this).height();
-            var pos = (offset.top - data_offset - 3);
-            var res = data_height - offset.top;
-            var delta = ((offset.top - data_offset - 3) / (data_height)) * timespan;
+            var pos = (offset.top);
+            var res = timespan * offset.top / data_height + data_start;
+            var delta = ((offset.top) / (data_height)) * timespan;
+            var hours = Math.floor(res);
+            var min = Math.floor((res - hours) * 60);
             var el = $(this).find('.os-title');
-            el.html(Math.round(delta) + data_start);
+            el.html(hours + ":" + min + "-" + (hours + 1) + ":" + min);
             console.log(res, data_height, offset.top);
         }
     }).resizable({

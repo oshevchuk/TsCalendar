@@ -5,66 +5,66 @@
 
 declare let $;
 
-let provide;
-let data_height = 0;
-let data_offset;
-let timespan = 13;
-let data_start = 8;
-let data_end = 21;
+//----------------------------------------------------------------------------
+//Provide object position on container and returns offset value
+//between min - max
+//----------------------------------------------------------------------------
+class PositionProvider {
+    public container:number;
+    public minValue:number;
+    public maxValue:number;
 
-class positionProvider {
-    public container;
-    public minValue;
-    public maxValue;
-
+    private timespan:number;
+    private step:number;
+    private stepHeight:number;
     private containerHeight:number;
     private containerOffset;
 
-    constructor(container, minValue?:number, maxValue?:number) {
+    constructor(container, minValue?:number, maxValue?:number, step?:number) {
         this.container = container;
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
 
         this.minValue = minValue ? minValue : 0;
         this.maxValue = maxValue ? maxValue : 0;
+        this.step = step ? step : 1;
+        this.stepHeight = this.containerHeight / this.step;
+        this.timespan = this.maxValue - this.minValue + 1;
+    }
+
+    // todo : calendarEvent
+    getValue(object) {
+        var objOffset = $(object).offset().top - this.containerOffset.top;
+        var el = object.find('.os-title');
+        el.html(this.getTimeFromValue(objOffset) + "-" + this.getTimeFromValue(objOffset + object.height()));
+    }
+
+    private getTimeFromValue(objOffset):string {
+        var res = this.timespan * objOffset / this.containerHeight + this.minValue;
+        var hours = Math.floor(res);
+        hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
+        var min = Math.floor((res - hours) * 60);
+        min = min.toString().length > 1 ? min : "0" + min.toString();
+        return hours + ":" + min;
     }
 }
 
 $(function () {
-    timespan = data_end - data_start + 1;
-    data_height = $('.os-dhx-holder').height() - 6;
-    data_offset = $('.os-dhx-holder').offset().top;
+    var positionProvider:PositionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
 
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
         axis: "y",
         drag: function (event, ui) {
-            var offset = $(this).offset();
-            offset.top -= data_offset + 3;
-            var element_height = $(this).height();
-
-            var pos = (offset.top);
-            var res = timespan * offset.top / data_height + data_start;
-
-            var delta = ((offset.top) / (data_height)) * timespan;
-
-            var hours = Math.floor(res);
-            var min = Math.floor((res - hours) * 60);
-
-            var el = $(this).find('.os-title');
-            el.html(hours + ":" + min + "-" + (hours + 1) + ":" + min);
-            // console.log(res, data_height, offset.top);
-            // ui.position.top=event.offset.top;
-            // console.log(event.target, ui);
-            // ui.position.top=ui
-            ui.offset.top = ui.position.top;
+            positionProvider.getValue($(this));
+            // ui.offset.top = ui.position.top;
         }
 
     }).resizable({
         containment: '#os-root',
-        grid: [20, 20],
         resize: function (event, ui) {
+            positionProvider.getValue($(this));
             // ui.size.width = ui.originalSize.width;
             $(this).css('width', '');
         }
@@ -87,11 +87,12 @@ $(function () {
                 containment: '#os-root',
                 axis: "y",
                 drag: function (event, ui) {
+                    positionProvider.getValue($(this));
                 }
             }).resizable({
             containment: '#os-root',
-            grid: [20, 20],
             resize: function (event, ui) {
+                positionProvider.getValue($(this));
                 $(this).css('width', '');
             }
         })
@@ -170,6 +171,9 @@ class DateProvide {
     }
 }
 
+//----------------------------------------------------------------------------
+//One Day with events and controls
+//----------------------------------------------------------------------------
 class Day {
     start:number = 9;
     end:number = 18;
@@ -203,6 +207,9 @@ class Day {
     }
 }
 
+//----------------------------------------------------------------------------
+//One event object with params to use in Day
+//----------------------------------------------------------------------------
 class CalendarEvent {
     public id:Number;
     public startData:Date;

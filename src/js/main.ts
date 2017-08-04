@@ -6,38 +6,61 @@
 declare let $;
 
 let provide;
-let data_height=0;
+let data_height = 0;
 let data_offset;
-let timespan=13;
-let data_start=8;
-let data_end=21;
+let timespan = 13;
+let data_start = 8;
+let data_end = 21;
+
+class positionProvider {
+    public container;
+    public minValue;
+    public maxValue;
+
+    private containerHeight:number;
+    private containerOffset;
+
+    constructor(container, minValue?:number, maxValue?:number) {
+        this.container = container;
+        this.containerHeight = this.container.height();
+        this.containerOffset = this.container.offset();
+
+        this.minValue = minValue ? minValue : 0;
+        this.maxValue = maxValue ? maxValue : 0;
+    }
+}
 
 $(function () {
-    timespan=data_end-data_start+1;
-    data_height=$('.os-dhx-holder').height()-6;
-    data_offset=$('.os-dhx-holder').offset().top;
+    timespan = data_end - data_start + 1;
+    data_height = $('.os-dhx-holder').height() - 6;
+    data_offset = $('.os-dhx-holder').offset().top;
 
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
         axis: "y",
         drag: function (event, ui) {
-            var offset=$(this).offset();
-            offset.top-=data_offset+3;
-            var element_height=$(this).height();
+            var offset = $(this).offset();
+            offset.top -= data_offset + 3;
+            var element_height = $(this).height();
 
-            var pos=(offset.top);
-            var res=timespan*offset.top/data_height + data_start;
+            var pos = (offset.top);
+            var res = timespan * offset.top / data_height + data_start;
 
-            var delta=((offset.top)/(data_height))*timespan;
+            var delta = ((offset.top) / (data_height)) * timespan;
 
-            var hours=Math.floor(res);
-            var min=Math.floor((res-hours)*60);
+            var hours = Math.floor(res);
+            var min = Math.floor((res - hours) * 60);
 
-            var el=$(this).find('.os-title');
-            el.html(hours+":"+min+"-"+(hours+1)+":"+min);
-            console.log(res, data_height, offset.top);
+            var el = $(this).find('.os-title');
+            el.html(hours + ":" + min + "-" + (hours + 1) + ":" + min);
+            // console.log(res, data_height, offset.top);
+            // ui.position.top=event.offset.top;
+            // console.log(event.target, ui);
+            // ui.position.top=ui
+            ui.offset.top = ui.position.top;
         }
+
     }).resizable({
         containment: '#os-root',
         grid: [20, 20],
@@ -147,35 +170,35 @@ class DateProvide {
     }
 }
 
-class Day{
-    start:number=9;
-    end:number=18;
+class Day {
+    start:number = 9;
+    end:number = 18;
     public Day:Date;
     public events:CalendarEvent[];
 
-    constructor(){
-        this.events=[];
+    constructor() {
+        this.events = [];
     }
 
-    addEvent(event:CalendarEvent){
+    addEvent(event:CalendarEvent) {
         this.events.push(event);
     }
-    
-    editEventTime(event:CalendarEvent, start, end){
-        let index=this.events.indexOf(event);
-        if(index> -1){
-            
+
+    editEventTime(event:CalendarEvent, start, end) {
+        let index = this.events.indexOf(event);
+        if (index > -1) {
+
         }
     }
 
-    removeEvent(event:CalendarEvent){
-        let index=this.events.indexOf(event);
-        if(index>-1) {
+    removeEvent(event:CalendarEvent) {
+        let index = this.events.indexOf(event);
+        if (index > -1) {
             this.events.splice(index, 1);
         }
     }
 
-    checkAviability(){
+    checkAviability() {
 
     }
 }

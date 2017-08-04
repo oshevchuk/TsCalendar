@@ -8,6 +8,16 @@ var data_offset;
 var timespan = 13;
 var data_start = 8;
 var data_end = 21;
+var positionProvider = (function () {
+    function positionProvider(container, minValue, maxValue) {
+        this.container = container;
+        this.containerHeight = this.container.height();
+        this.containerOffset = this.container.offset();
+        this.minValue = minValue ? minValue : 0;
+        this.maxValue = maxValue ? maxValue : 0;
+    }
+    return positionProvider;
+}());
 $(function () {
     timespan = data_end - data_start + 1;
     data_height = $('.os-dhx-holder').height() - 6;
@@ -27,7 +37,11 @@ $(function () {
             var min = Math.floor((res - hours) * 60);
             var el = $(this).find('.os-title');
             el.html(hours + ":" + min + "-" + (hours + 1) + ":" + min);
-            console.log(res, data_height, offset.top);
+            // console.log(res, data_height, offset.top);
+            // ui.position.top=event.offset.top;
+            // console.log(event.target, ui);
+            // ui.position.top=ui
+            ui.offset.top = ui.position.top;
         }
     }).resizable({
         containment: '#os-root',

@@ -23,11 +23,13 @@ var PositionProvider = (function () {
         var el = object.find('.os-title');
         el.html(this.getTimeFromValue(objOffset) + "-" + this.getTimeFromValue(objOffset + object.height()));
     };
+    //todo: grid position by 5min(fixed)
     PositionProvider.prototype.getTimeFromValue = function (objOffset) {
         var res = this.timespan * objOffset / this.containerHeight + this.minValue;
         var hours = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
         var min = Math.floor((res - hours) * 60);
+        min = min - min % this.step;
         min = min.toString().length > 1 ? min : "0" + min.toString();
         return hours + ":" + min;
     };

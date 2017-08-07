@@ -35,15 +35,18 @@ var PositionProvider = (function () {
     };
     return PositionProvider;
 }());
+var positionProvider;
+var days = [];
 $(function () {
-    var positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
+    positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
+    days.push(new CalendarEvent(new Date('2017-08-07T10:24:00'), new Date('2017-08-07T13:24:00'), 'text event'));
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
         axis: "y",
         drag: function (event, ui) {
             positionProvider.getValue($(this));
-            // ui.offset.top = ui.position.top;
+            ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
         }
     }).resizable({
         containment: '#os-root',
@@ -62,6 +65,7 @@ $(function () {
     // console.log(1);
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
+        console.log($(event.target.hash).parent(), $(e.target).parent());
         $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({
@@ -69,6 +73,7 @@ $(function () {
             axis: "y",
             drag: function (event, ui) {
                 positionProvider.getValue($(this));
+                ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
             }
         }).resizable({
             containment: '#os-root',
@@ -85,8 +90,10 @@ $('.os-dhx-holder').on('click', '.os-remove', function (e) {
 });
 $('.os-dhx-holder').on('click', '.os-event', function (e) {
     // console.log(this);
+    $('.os-event').draggable('disable');
     $('.os-controlls').hide();
     $(this).find('.os-controlls').show();
+    $(this).draggable('enable');
 });
 $('.os-close-modal').on('click', function () {
     $('.os-modal-overlay').fadeOut(400);
@@ -138,10 +145,11 @@ var DateProvide = (function () {
 //One Day with events and controls
 //----------------------------------------------------------------------------
 var Day = (function () {
-    function Day() {
+    function Day(event) {
         this.start = 9;
         this.end = 18;
         this.events = [];
+        event ? this.events.push(event) : null;
     }
     Day.prototype.addEvent = function (event) {
         this.events.push(event);

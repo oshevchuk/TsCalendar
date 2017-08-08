@@ -47,6 +47,7 @@ var path = {
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
         html: 'src/**/*.html',
         js: 'src/js/**/*.js',
+        ts: 'src/js/**/*.ts',
         style: 'src/sass/**/*.scss',
         img: 'src/img/**/*.*',
         fonts: 'src/fonts/**/*.*'
@@ -157,8 +158,11 @@ gulp.task('watch', function () {
     gulp.watch([path.watch.style], function (event, cb) {
         gulp.start('sass');
     });
-    gulp.watch([path.watch.js], function (event, cb) {
-        gulp.start('js:build');
+    // gulp.watch([path.watch.js], function (event, cb) {
+    //     gulp.start('js:build');
+    // });
+    gulp.watch([path.watch.ts], function (event, cb) {
+        gulp.start('ts');
     });
     gulp.watch([path.watch.img], function (event, cb) {
         gulp.start('image:build');

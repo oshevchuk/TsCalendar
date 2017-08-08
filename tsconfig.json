@@ -10,6 +10,8 @@
   ],
   "files": [
     "src/js/main.ts",
-    "src/js/PositionProvider.ts"
+    "src/js/PositionProvider.ts",
+    "src/js/Day.ts",
+    "src/js/DateProvide.ts"
   ]
 }

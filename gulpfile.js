@@ -22,8 +22,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 
-
-// var browserify = require('browserify');
+var ts = require("gulp-typescript");
+var tsProject = ts.createProject("tsconfig.json");
+var tsify = require("tsify");
+var source = require('vinyl-source-stream');
+var browserify = require('browserify');
 
 
 var path = {
@@ -44,6 +47,7 @@ var path = {
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
         html: 'src/**/*.html',
         js: 'src/js/**/*.js',
+        ts: 'src/js/**/*.ts',
         style: 'src/sass/**/*.scss',
         img: 'src/img/**/*.*',
         fonts: 'src/fonts/**/*.*'
@@ -78,6 +82,26 @@ gulp.task('html:build', function () {
     // .pipe(rigger()) //Прогоним через rigger
         .pipe(gulp.dest(path.build.html)) //Выплюнем их в папку build
         .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновлений
+});
+
+gulp.task('ts', function () {
+
+    // return tsProject.src()
+    //     .pipe(tsProject())
+    //     .js.pipe(gulp.dest('build'))
+
+    return browserify({
+        basedir: '.',
+        debug: false,
+        entries: ['src/js/main.ts'],
+        cache: {},
+        packageCache: {}
+    })
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest("build/js"))
+    .pipe(reload({stream: true})); //И перезагрузим сервер
 });
 
 gulp.task('js:build', function () {
@@ -120,7 +144,8 @@ gulp.task('fonts:build', function () {
 
 gulp.task('build', [
     'html:build',
-    'js:build',
+    'ts',
+    // 'js:build',
     'sass',
     'fonts:build',
     'image:build'
@@ -133,8 +158,11 @@ gulp.task('watch', function () {
     gulp.watch([path.watch.style], function (event, cb) {
         gulp.start('sass');
     });
-    gulp.watch([path.watch.js], function (event, cb) {
-        gulp.start('js:build');
+    // gulp.watch([path.watch.js], function (event, cb) {
+    //     gulp.start('js:build');
+    // });
+    gulp.watch([path.watch.ts], function (event, cb) {
+        gulp.start('ts');
     });
     gulp.watch([path.watch.img], function (event, cb) {
         gulp.start('image:build');

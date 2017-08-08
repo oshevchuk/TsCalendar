@@ -18,21 +18,23 @@
   "homepage": "https://github.com/oshevchuk/TsCalendar#readme",
   "dependencies": {
     "@types/jquery": "^3.2.8",
-    "gulp": "^3.9.1",
+    "@types/jqueryui": "^1.11.35",
     "gulp-bundle-assets": "^2.28.0"
   },
   "devDependencies": {
     "browser-sync": "^2.18.12",
     "browserify": "^14.4.0",
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.0.4",
     "gulp-rigger": "^0.5.8",
     "gulp-sass": "^3.1.0",
-    "gulp-typescript": "^3.2.0",
+    "gulp-typescript": "^3.2.1",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.5",
     "rimraf": "^2.6.1",
     "tsify": "^3.0.1",
+    "typescript": "^2.4.2",
     "vinyl-source-stream": "^1.1.0"
   }
 }

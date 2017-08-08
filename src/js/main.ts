@@ -4,23 +4,28 @@
  */
 
 declare let $;
+// import * as $ from 'jquery';
+///1
+
+import {pp} from "./PositionProvider";
+console.log(pp);
 
 //----------------------------------------------------------------------------
 //Provide object position on container and returns offset value
 //between min - max
 //----------------------------------------------------------------------------
 class PositionProvider {
-    public container:number;
+    public container:any;
     public minValue:number;
     public maxValue:number;
 
     private timespan:number;
     private step:number;
     private stepHeight:number;
-    private containerHeight:number;
+    private containerHeight:any;
     private containerOffset;
 
-    constructor(container, minValue?:number, maxValue?:number, step?:number) {
+    constructor(container:any, minValue?:number, maxValue?:number, step?:number) {
         this.container = container;
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
@@ -42,9 +47,9 @@ class PositionProvider {
     //todo: grid position by 5min(fixed)
     private getTimeFromValue(objOffset):string {
         var res = this.timespan * objOffset / this.containerHeight + this.minValue;
-        var hours = Math.floor(res);
+        var hours: number | string = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
-        var min = Math.floor((res - hours) * 60);
+        var min: number | string = Math.floor((res - <number>hours) * 60);
         min = min - min % this.step;
         min = min.toString().length > 1 ? min : "0" + min.toString();
         return hours + ":" + min;
@@ -53,6 +58,7 @@ class PositionProvider {
 
 var positionProvider:PositionProvider;
 var days:CalendarEvent[]=[];
+var provide:DateProvide;
 
 $(function () {
     positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
@@ -92,7 +98,7 @@ $(function () {
 
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
-        console.log($(event.target.hash).parent(), $(e.target).parent());
+        // console.log($(event.target.hash).parent(), $(e.target).parent());
         $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({
@@ -179,7 +185,7 @@ class DateProvide {
         // console.log(start, tmp);
     }
 
-    public NextWeek(factor) {
+    public NextWeek(factor?) {
         factor = factor ? factor : 1;
         this.Curent_day.setDate(this.Curent_day.getDate() + 7 * factor);
         this.ShowHeaders();

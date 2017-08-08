@@ -1,7 +1,19 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.pp = "232323";
+
+},{}],2:[function(require,module,exports){
+"use strict";
 /**
  * Created by Oshevchuk on 13.07.2017.
  * http://oshevchuk2016.16mb.com/
  */
+Object.defineProperty(exports, "__esModule", { value: true });
+// import * as $ from 'jquery';
+///1
+var PositionProvider_1 = require("./PositionProvider");
+console.log(PositionProvider_1.pp);
 //----------------------------------------------------------------------------
 //Provide object position on container and returns offset value
 //between min - max
@@ -37,6 +49,7 @@ var PositionProvider = (function () {
 }());
 var positionProvider;
 var days = [];
+var provide;
 $(function () {
     positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
     days.push(new CalendarEvent(new Date('2017-08-07T10:24:00'), new Date('2017-08-07T13:24:00'), 'text event'));
@@ -65,7 +78,7 @@ $(function () {
     // console.log(1);
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
-        console.log($(event.target.hash).parent(), $(e.target).parent());
+        // console.log($(event.target.hash).parent(), $(e.target).parent());
         $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({
@@ -187,4 +200,5 @@ var Modal = (function () {
     };
     return Modal;
 }());
-//# sourceMappingURL=main.js.map
+
+},{"./PositionProvider":1}]},{},[2]);

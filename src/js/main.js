@@ -2,6 +2,10 @@
  * Created by Oshevchuk on 13.07.2017.
  * http://oshevchuk2016.16mb.com/
  */
+"use strict";
+// declare let $;
+var $ = require('jquery');
+///1
 //----------------------------------------------------------------------------
 //Provide object position on container and returns offset value
 //between min - max
@@ -37,6 +41,7 @@ var PositionProvider = (function () {
 }());
 var positionProvider;
 var days = [];
+var provide;
 $(function () {
     positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
     days.push(new CalendarEvent(new Date('2017-08-07T10:24:00'), new Date('2017-08-07T13:24:00'), 'text event'));
@@ -65,7 +70,7 @@ $(function () {
     // console.log(1);
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
-        console.log($(event.target.hash).parent(), $(e.target).parent());
+        // console.log($(event.target.hash).parent(), $(e.target).parent());
         $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({

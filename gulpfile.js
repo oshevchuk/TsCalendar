@@ -22,8 +22,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 
-
-// var browserify = require('browserify');
+var ts = require("gulp-typescript");
+var tsProject = ts.createProject("tsconfig.json");
+var tsify = require("tsify");
+var source = require('vinyl-source-stream');
+var browserify = require('browserify');
 
 
 var path = {
@@ -80,6 +83,26 @@ gulp.task('html:build', function () {
         .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновлений
 });
 
+gulp.task('ts', function () {
+
+    // return tsProject.src()
+    //     .pipe(tsProject())
+    //     .js.pipe(gulp.dest('build'))
+
+    return browserify({
+        basedir: '.',
+        debug: false,
+        entries: ['src/js/main.ts'],
+        cache: {},
+        packageCache: {}
+    })
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest("build/js"))
+    .pipe(reload({stream: true})); //И перезагрузим сервер
+});
+
 gulp.task('js:build', function () {
     return gulp.src(path.src.js) //Найдем наш main файл
 
@@ -120,7 +143,8 @@ gulp.task('fonts:build', function () {
 
 gulp.task('build', [
     'html:build',
-    'js:build',
+    'ts',
+    // 'js:build',
     'sass',
     'fonts:build',
     'image:build'

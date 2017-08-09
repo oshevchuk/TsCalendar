@@ -5,12 +5,12 @@
 import {CalendarEvent} from "./calendarEvent";
 export class PositionProvider {
     public container:any;
-    public minValue:number;
-    public maxValue:number;
+    static minValue:number;
+    static maxValue:number;
 
     private timespan:number;
     private step:number;
-    private stepHeight:number;
+    static stepHeight:number;
     private containerHeight:any;
     private containerOffset;
 
@@ -19,13 +19,13 @@ export class PositionProvider {
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
 
-        this.minValue = minValue ? minValue : 0;
-        this.maxValue = maxValue ? maxValue : 0;
+        PositionProvider.minValue = minValue ? minValue : 0;
+        PositionProvider.maxValue = maxValue ? maxValue : 0;
         this.step = step ? step : 1;
 
-        this.timespan = this.maxValue - this.minValue + 1;
+        this.timespan = PositionProvider.maxValue - PositionProvider.minValue + 1;
 
-        this.stepHeight = this.containerHeight / this.timespan;
+        PositionProvider.stepHeight = this.containerHeight / this.timespan;
     }
 
     // todo : calendarEvent
@@ -37,7 +37,7 @@ export class PositionProvider {
 
     //todo: grid position by 5min(fixed)
     private getTimeFromValue(objOffset):string {
-        var res = this.timespan * objOffset / this.containerHeight + this.minValue;
+        var res = this.timespan * objOffset / this.containerHeight + PositionProvider.minValue;
         var hours:number | string = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
         var min:number | string = Math.floor((res - <number>hours) * 60);
@@ -61,10 +61,10 @@ export class PositionProvider {
     }
 
     private calc(time) {
-        var hours = time.getHours() - this.minValue;
+        var hours = time.getHours() - PositionProvider.minValue;
         var mins = time.getMinutes() - time.getMinutes() % 5;
-        var stepi = this.stepHeight / 60;
+        var stepi = PositionProvider.stepHeight / 60;
 
-        return hours * this.stepHeight + mins * stepi;
+        return hours * PositionProvider.stepHeight + mins * stepi;
     }
 }

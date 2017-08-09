@@ -51,11 +51,11 @@ var PositionProvider = (function () {
         this.container = container;
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
-        this.minValue = minValue ? minValue : 0;
-        this.maxValue = maxValue ? maxValue : 0;
+        PositionProvider.minValue = minValue ? minValue : 0;
+        PositionProvider.maxValue = maxValue ? maxValue : 0;
         this.step = step ? step : 1;
-        this.timespan = this.maxValue - this.minValue + 1;
-        this.stepHeight = this.containerHeight / this.timespan;
+        this.timespan = PositionProvider.maxValue - PositionProvider.minValue + 1;
+        PositionProvider.stepHeight = this.containerHeight / this.timespan;
     }
     // todo : calendarEvent
     PositionProvider.prototype.getValue = function (object) {
@@ -65,7 +65,7 @@ var PositionProvider = (function () {
     };
     //todo: grid position by 5min(fixed)
     PositionProvider.prototype.getTimeFromValue = function (objOffset) {
-        var res = this.timespan * objOffset / this.containerHeight + this.minValue;
+        var res = this.timespan * objOffset / this.containerHeight + PositionProvider.minValue;
         var hours = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
         var min = Math.floor((res - hours) * 60);
@@ -83,10 +83,10 @@ var PositionProvider = (function () {
         return { "m": this.calc(time.startData), "h": this.calc(time.endData) - this.calc(time.startData) };
     };
     PositionProvider.prototype.calc = function (time) {
-        var hours = time.getHours() - this.minValue;
+        var hours = time.getHours() - PositionProvider.minValue;
         var mins = time.getMinutes() - time.getMinutes() % 5;
-        var stepi = this.stepHeight / 60;
-        return hours * this.stepHeight + mins * stepi;
+        var stepi = PositionProvider.stepHeight / 60;
+        return hours * PositionProvider.stepHeight + mins * stepi;
     };
     return PositionProvider;
 }());
@@ -94,11 +94,12 @@ exports.PositionProvider = PositionProvider;
 
 },{}],3:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var PositionProvider_1 = require("./PositionProvider");
 /**
  * Created by Oshevchuk on 09.08.2017.
  * http://oshevchuk2016.16mb.com/
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 //----------------------------------------------------------------------------
 //One event object with params to use in Day
 //----------------------------------------------------------------------------
@@ -108,11 +109,23 @@ var CalendarEvent = (function () {
         this.endData = endData;
         this.description = description ? description : '';
     }
+    //
+    CalendarEvent.prototype.getHtml = function () {
+        var ans = "<div class=\"os-event\"><div class=\"os-title\">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class=\"os-resize\"></div>        <div class=\"os-controlls\">        <a href=\"#\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></a>        <a href=\"#\"><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i></a><a class=\"os-remove\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></div></div>";
+        console.log({ "m": this.calc(this.startData), "h": this.calc(this.endData) - this.calc(this.startData) });
+        console.log(ans);
+    };
+    CalendarEvent.prototype.calc = function (time) {
+        var hours = time.getHours() - PositionProvider_1.PositionProvider.minValue;
+        var mins = time.getMinutes() - time.getMinutes() % 5;
+        var stepi = PositionProvider_1.PositionProvider.stepHeight / 60;
+        return Math.round(hours * PositionProvider_1.PositionProvider.stepHeight + mins * stepi);
+    };
     return CalendarEvent;
 }());
 exports.CalendarEvent = CalendarEvent;
 
-},{}],4:[function(require,module,exports){
+},{"./PositionProvider":2}],4:[function(require,module,exports){
 "use strict";
 /**
  * Created by Oshevchuk on 13.07.2017.
@@ -128,7 +141,7 @@ var day = [];
 var provide;
 $(function () {
     positionProvider = new PositionProvider_1.PositionProvider($('.os-dhx-holder'), 8, 21, 5);
-    day.push(new calendarEvent_1.CalendarEvent(new Date('2017-08-09T08:00:00'), new Date('2017-08-09T12:27:00'), 'text event'));
+    day.push(new calendarEvent_1.CalendarEvent(new Date('2017-08-09T08:30:00'), new Date('2017-08-09T12:27:00'), 'text event'));
     ShowEvents();
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
@@ -156,7 +169,7 @@ $(function () {
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
         // console.log($(event.target.hash).parent(), $(e.target).parent());
-        $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
+        $(e.target).append(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({
             containment: '#os-root',
@@ -180,9 +193,10 @@ function ShowEvents() {
     // console.log(contain);
     day.forEach(function (a, b) {
         var pos = positionProvider.getPositionFromTime(a);
-        $(contain).html('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
+        $(contain).append('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
             .find('.os-event')
             .css({ 'top': pos.m + "px", 'height': pos.h });
+        a.getHtml();
         console.log(pos);
     });
 }

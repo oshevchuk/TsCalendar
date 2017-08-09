@@ -20,7 +20,7 @@ $(function () {
 
     positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
     day.push(new CalendarEvent(
-        new Date('2017-08-09T08:00:00'),
+        new Date('2017-08-09T08:30:00'),
         new Date('2017-08-09T12:27:00'),
         'text event'
     ));
@@ -57,7 +57,7 @@ $(function () {
     $('.os-dhx-holder').dblclick(function (e) {
         $('.os-modal-overlay').fadeIn(400);
         // console.log($(event.target.hash).parent(), $(e.target).parent());
-        $(e.target).html(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
+        $(e.target).append(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
             .find('.os-event')
             .draggable({
                 containment: '#os-root',
@@ -84,9 +84,11 @@ function ShowEvents(){
     day.forEach(function (a, b) {
         let pos=positionProvider.getPositionFromTime(a);
 
-        $(contain).html('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
+        $(contain).append('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
             .find('.os-event')
             .css({'top':pos.m+"px", 'height':pos.h});
+
+        a.getHtml();
         console.log(pos);
     })
 }

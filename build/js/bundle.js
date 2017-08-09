@@ -45,61 +45,7 @@ exports.DateProvide = DateProvide;
 
 },{}],2:[function(require,module,exports){
 "use strict";
-/**
- * Created by Oshevchuk on 08.08.2017.
- * http://oshevchuk2016.16mb.com/
- */
 Object.defineProperty(exports, "__esModule", { value: true });
-//----------------------------------------------------------------------------
-//One Day with events and controls
-//----------------------------------------------------------------------------
-var Day = (function () {
-    function Day(event) {
-        this.start = 9;
-        this.end = 18;
-        this.events = [];
-        event ? this.events.push(event) : null;
-    }
-    Day.prototype.addEvent = function (event) {
-        this.events.push(event);
-    };
-    Day.prototype.editEventTime = function (event, start, end) {
-        var index = this.events.indexOf(event);
-        if (index > -1) {
-        }
-    };
-    Day.prototype.removeEvent = function (event) {
-        var index = this.events.indexOf(event);
-        if (index > -1) {
-            this.events.splice(index, 1);
-        }
-    };
-    Day.prototype.checkAviability = function () {
-    };
-    return Day;
-}());
-exports.Day = Day;
-//----------------------------------------------------------------------------
-//One event object with params to use in Day
-//----------------------------------------------------------------------------
-var CalendarEvent = (function () {
-    function CalendarEvent(startData, endData, description) {
-        this.startData = startData;
-        this.endData = endData;
-        this.description = description ? description : '';
-    }
-    return CalendarEvent;
-}());
-exports.CalendarEvent = CalendarEvent;
-
-},{}],3:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.pp = "2321-3";
-//----------------------------------------------------------------------------
-//Provide object position on container and returns offset value
-//between min - max
-//----------------------------------------------------------------------------
 var PositionProvider = (function () {
     function PositionProvider(container, minValue, maxValue, step) {
         this.container = container;
@@ -108,8 +54,8 @@ var PositionProvider = (function () {
         this.minValue = minValue ? minValue : 0;
         this.maxValue = maxValue ? maxValue : 0;
         this.step = step ? step : 1;
-        this.stepHeight = this.containerHeight / this.step;
         this.timespan = this.maxValue - this.minValue + 1;
+        this.stepHeight = this.containerHeight / this.timespan;
     }
     // todo : calendarEvent
     PositionProvider.prototype.getValue = function (object) {
@@ -127,9 +73,44 @@ var PositionProvider = (function () {
         min = min.toString().length > 1 ? min : "0" + min.toString();
         return hours + ":" + min;
     };
+    PositionProvider.prototype.getPositionFromTime = function (time) {
+        // var hours=time.startData.getHours()-this.minValue;
+        // var mins=time.startData.getMinutes()-time.startData.getMinutes()%5;
+        //
+        // var stepi=this.stepHeight/60;
+        // console.log(this.calc(time.startData), this.calc(time.endData));
+        // return { 'm': hours*this.stepHeight+mins*stepi, "h": 20};
+        return { "m": this.calc(time.startData), "h": this.calc(time.endData) - this.calc(time.startData) };
+    };
+    PositionProvider.prototype.calc = function (time) {
+        var hours = time.getHours() - this.minValue;
+        var mins = time.getMinutes() - time.getMinutes() % 5;
+        var stepi = this.stepHeight / 60;
+        return hours * this.stepHeight + mins * stepi;
+    };
     return PositionProvider;
 }());
 exports.PositionProvider = PositionProvider;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+/**
+ * Created by Oshevchuk on 09.08.2017.
+ * http://oshevchuk2016.16mb.com/
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+//----------------------------------------------------------------------------
+//One event object with params to use in Day
+//----------------------------------------------------------------------------
+var CalendarEvent = (function () {
+    function CalendarEvent(startData, endData, description) {
+        this.startData = startData;
+        this.endData = endData;
+        this.description = description ? description : '';
+    }
+    return CalendarEvent;
+}());
+exports.CalendarEvent = CalendarEvent;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -140,14 +121,15 @@ exports.PositionProvider = PositionProvider;
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as $ from 'jquery';
 var PositionProvider_1 = require("./PositionProvider");
-var Day_1 = require("./Day");
+var calendarEvent_1 = require("./calendarEvent");
 var DateProvide_1 = require("./DateProvide");
 var positionProvider;
-var days = [];
+var day = [];
 var provide;
 $(function () {
     positionProvider = new PositionProvider_1.PositionProvider($('.os-dhx-holder'), 8, 21, 5);
-    days.push(new Day_1.CalendarEvent(new Date('2017-08-07T10:24:00'), new Date('2017-08-07T13:24:00'), 'text event'));
+    day.push(new calendarEvent_1.CalendarEvent(new Date('2017-08-09T08:00:00'), new Date('2017-08-09T12:27:00'), 'text event'));
+    ShowEvents();
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
         containment: '#os-root',
@@ -193,6 +175,17 @@ $(function () {
             .css({ "top": e.offsetY });
     });
 });
+function ShowEvents() {
+    var contain = $('.os-dhx-holder')[0];
+    // console.log(contain);
+    day.forEach(function (a, b) {
+        var pos = positionProvider.getPositionFromTime(a);
+        $(contain).html('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
+            .find('.os-event')
+            .css({ 'top': pos.m + "px", 'height': pos.h });
+        console.log(pos);
+    });
+}
 $('.os-dhx-holder').on('click', '.os-remove', function (e) {
     $(this).parent().parent().remove();
 });
@@ -214,4 +207,4 @@ function prevWeek() {
 }
 $(".er").show();
 
-},{"./DateProvide":1,"./Day":2,"./PositionProvider":3}]},{},[4]);
+},{"./DateProvide":1,"./PositionProvider":2,"./calendarEvent":3}]},{},[4]);

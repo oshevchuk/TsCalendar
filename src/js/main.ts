@@ -6,23 +6,26 @@
 declare let $;
 // import * as $ from 'jquery';
 
-import {pp, PositionProvider} from "./PositionProvider";
-import {Day, CalendarEvent} from "./Day";
+import {PositionProvider} from "./PositionProvider";
+import {Day} from "./Day";
+import {CalendarEvent} from './calendarEvent';
 import {DateProvide} from './DateProvide';
 
 
 var positionProvider:PositionProvider;
-var days:CalendarEvent[]=[];
+var day:CalendarEvent[]=[];
 var provide:DateProvide;
 
 $(function () {
-    positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
 
-    days.push(new CalendarEvent(
-        new Date('2017-08-07T10:24:00'),
-        new Date('2017-08-07T13:24:00'),
+    positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
+    day.push(new CalendarEvent(
+        new Date('2017-08-09T08:00:00'),
+        new Date('2017-08-09T12:27:00'),
         'text event'
     ));
+
+    ShowEvents();
 
     $('.os-dhx-holder').droppable();
     $('.os-event').draggable({
@@ -73,6 +76,20 @@ $(function () {
             .css({"top": e.offsetY});
     });
 });
+
+function ShowEvents(){
+    var contain=$('.os-dhx-holder')[0];
+    // console.log(contain);
+
+    day.forEach(function (a, b) {
+        let pos=positionProvider.getPositionFromTime(a);
+
+        $(contain).html('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
+            .find('.os-event')
+            .css({'top':pos.m+"px", 'height':pos.h});
+        console.log(pos);
+    })
+}
 
 $('.os-dhx-holder').on('click', '.os-remove', function (e) {
     $(this).parent().parent().remove();

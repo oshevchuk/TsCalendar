@@ -6,6 +6,8 @@
 //----------------------------------------------------------------------------
 //One Day with events and controls
 //----------------------------------------------------------------------------
+
+    import  {CalendarEvent} from './calendarEvent';
 export class Day {
     start:number = 9;
     end:number = 18;
@@ -37,21 +39,5 @@ export class Day {
 
     checkAviability() {
 
-    }
-}
-
-//----------------------------------------------------------------------------
-//One event object with params to use in Day
-//----------------------------------------------------------------------------
-export class CalendarEvent {
-    public id:Number;
-    public startData:Date;
-    public endData:Date;
-    public description:string;
-
-    constructor(startData:Date, endData:Date, description?:string) {
-        this.startData = startData;
-        this.endData = endData;
-        this.description = description ? description : '';
     }
 }

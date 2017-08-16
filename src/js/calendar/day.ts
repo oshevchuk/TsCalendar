@@ -1,8 +1,9 @@
+import {osEvent} from "./event";
 /**
  * Created by Oshevchuk on 15.08.2017.
  * http://oshevchuk2016.16mb.com/
  */
-class osDay{
+export class osDay{
     start:number = 9;
     end:number = 18;
     public Day:Date;

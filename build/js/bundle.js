@@ -46,26 +46,185 @@ exports.DateProvide = DateProvide;
 },{}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var PositionProvider = (function () {
-    function PositionProvider(container, minValue, maxValue, step) {
+var day_1 = require("./day");
+var event_1 = require("./event");
+var positionProvider_1 = require("./positionProvider");
+var DateProvide_1 = require("../DateProvide");
+var osCalendar = (function () {
+    function osCalendar() {
+        this.week = [];
+        for (var i = 0; i < 7; i++) {
+            this.week.push(new day_1.osDay(new event_1.osEvent(new Date('2017-08-09T08:30:00'), new Date('2017-08-09T12:27:00'), 'text event')));
+        }
+        this.provide = new DateProvide_1.DateProvide(new Date());
+        this.provide.ShowHeaders();
+        this.positionProvider = new positionProvider_1.osPositionProvider($('.os-dhx-holder'), 8, 21, 5);
+        this.ShowWeekEvents();
+        this.BindEvents();
+        // console.log(this.week);
+    }
+    osCalendar.prototype.nextWeek = function () {
+        this.provide.NextWeek();
+    };
+    osCalendar.prototype.prevWeek = function () {
+        this.provide.NextWeek(-1);
+    };
+    osCalendar.prototype.BindEvents = function () {
+        var self = this;
+        $('.os-dhx-holder').droppable();
+        $('.os-event').draggable({
+            containment: '#os-root',
+            axis: "y",
+            drag: function (event, ui) {
+                self.positionProvider.getValue($(this));
+                ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
+            }
+        }).resizable({
+            containment: '#os-root',
+            resize: function (event, ui) {
+                self.positionProvider.getValue($(this));
+                // ui.size.width = ui.originalSize.width;
+                $(this).css('width', '');
+            }
+        });
+        $('.os-dhx-holder').on('click', '.os-remove', function (e) {
+            $(this).parent().parent().remove();
+        });
+        $('.os-dhx-holder').on('click', '.os-event', function (e) {
+            $('.os-event').draggable('disable');
+            $('.os-controlls').hide();
+            $(this).find('.os-controlls').show();
+            $(this).draggable('enable');
+        });
+        $('.os-close-modal').on('click', function () {
+            $('.os-modal-overlay').fadeOut(400);
+        });
+        $('.os-dhx-holder').dblclick(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var select = $(e.target).data('num');
+            if (select) {
+                $('.os-modal-overlay').fadeIn(400);
+                // console.log($(event.target.hash).parent(), $(e.target).parent());
+                $(e.target).append(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
+                    .find('.os-event')
+                    .draggable({
+                    containment: '#os-root',
+                    axis: "y",
+                    drag: function (event, ui) {
+                        self.positionProvider.getValue($(this));
+                        ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
+                    }
+                }).resizable({
+                    containment: '#os-root',
+                    resize: function (event, ui) {
+                        self.positionProvider.getValue($(this));
+                        $(this).css('width', '');
+                    }
+                })
+                    .css({ "top": e.offsetY });
+            }
+        });
+    };
+    osCalendar.prototype.ShowGrid = function () {
+    };
+    osCalendar.prototype.SelectWeek = function () {
+    };
+    osCalendar.prototype.getWeekEvents = function () {
+    };
+    osCalendar.prototype.ShowWeekEvents = function () {
+        var contain = $('.os-dhx-holder');
+        this.week.forEach(function (a, b) {
+            $(contain)[b].append(a.events[0].getHtml());
+        });
+    };
+    return osCalendar;
+}());
+exports.osCalendar = osCalendar;
+
+},{"../DateProvide":1,"./day":3,"./event":4,"./positionProvider":5}],3:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Created by Oshevchuk on 15.08.2017.
+ * http://oshevchuk2016.16mb.com/
+ */
+var osDay = (function () {
+    function osDay(event) {
+        this.start = 9;
+        this.end = 18;
+        this.events = [];
+        event ? this.events.push(event) : null;
+    }
+    osDay.prototype.addEvent = function (event) {
+        this.events.push(event);
+    };
+    osDay.prototype.editEventTime = function (event, start, end) {
+        var index = this.events.indexOf(event);
+        if (index > -1) {
+        }
+    };
+    osDay.prototype.removeEvent = function (event) {
+        var index = this.events.indexOf(event);
+        if (index > -1) {
+            this.events.splice(index, 1);
+        }
+    };
+    osDay.prototype.checkAviability = function () {
+    };
+    return osDay;
+}());
+exports.osDay = osDay;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Created by Oshevchuk on 15.08.2017.
+ * http://oshevchuk2016.16mb.com/
+ */
+var osEvent = (function () {
+    function osEvent(startData, endData, description) {
+        this.startData = startData;
+        this.endData = endData;
+        this.description = description ? description : '';
+    }
+    osEvent.prototype.getHtml = function () {
+        var ans = '<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>';
+        // console.log( {"m": this.calc(this.startData), "h": this.calc(this.endData)-this.calc(this.startData)});
+        // console.log(ans);
+        var t = document.createElement("p");
+        t.className = "os-event";
+        t.innerHTML = '<div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div>';
+        return t;
+    };
+    return osEvent;
+}());
+exports.osEvent = osEvent;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var osPositionProvider = (function () {
+    function osPositionProvider(container, minValue, maxValue, step) {
         this.container = container;
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
-        PositionProvider.minValue = minValue ? minValue : 0;
-        PositionProvider.maxValue = maxValue ? maxValue : 0;
+        osPositionProvider.minValue = minValue ? minValue : 0;
+        osPositionProvider.maxValue = maxValue ? maxValue : 0;
         this.step = step ? step : 1;
-        this.timespan = PositionProvider.maxValue - PositionProvider.minValue + 1;
-        PositionProvider.stepHeight = this.containerHeight / this.timespan;
+        this.timespan = osPositionProvider.maxValue - osPositionProvider.minValue + 1;
+        osPositionProvider.stepHeight = this.containerHeight / this.timespan;
     }
     // todo : calendarEvent
-    PositionProvider.prototype.getValue = function (object) {
+    osPositionProvider.prototype.getValue = function (object) {
         var objOffset = $(object).offset().top - this.containerOffset.top;
         var el = object.find('.os-title');
         el.html(this.getTimeFromValue(objOffset) + "-" + this.getTimeFromValue(objOffset + object.height()));
     };
     //todo: grid position by 5min(fixed)
-    PositionProvider.prototype.getTimeFromValue = function (objOffset) {
-        var res = this.timespan * objOffset / this.containerHeight + PositionProvider.minValue;
+    osPositionProvider.prototype.getTimeFromValue = function (objOffset) {
+        var res = this.timespan * objOffset / this.containerHeight + osPositionProvider.minValue;
         var hours = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
         var min = Math.floor((res - hours) * 60);
@@ -73,59 +232,20 @@ var PositionProvider = (function () {
         min = min.toString().length > 1 ? min : "0" + min.toString();
         return hours + ":" + min;
     };
-    PositionProvider.prototype.getPositionFromTime = function (time) {
-        // var hours=time.startData.getHours()-this.minValue;
-        // var mins=time.startData.getMinutes()-time.startData.getMinutes()%5;
-        //
-        // var stepi=this.stepHeight/60;
-        // console.log(this.calc(time.startData), this.calc(time.endData));
-        // return { 'm': hours*this.stepHeight+mins*stepi, "h": 20};
+    osPositionProvider.prototype.getPositionFromTime = function (time) {
         return { "m": this.calc(time.startData), "h": this.calc(time.endData) - this.calc(time.startData) };
     };
-    PositionProvider.prototype.calc = function (time) {
-        var hours = time.getHours() - PositionProvider.minValue;
+    osPositionProvider.prototype.calc = function (time) {
+        var hours = time.getHours() - osPositionProvider.minValue;
         var mins = time.getMinutes() - time.getMinutes() % 5;
-        var stepi = PositionProvider.stepHeight / 60;
-        return hours * PositionProvider.stepHeight + mins * stepi;
+        var stepi = osPositionProvider.stepHeight / 60;
+        return hours * osPositionProvider.stepHeight + mins * stepi;
     };
-    return PositionProvider;
+    return osPositionProvider;
 }());
-exports.PositionProvider = PositionProvider;
+exports.osPositionProvider = osPositionProvider;
 
-},{}],3:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var PositionProvider_1 = require("./PositionProvider");
-/**
- * Created by Oshevchuk on 09.08.2017.
- * http://oshevchuk2016.16mb.com/
- */
-//----------------------------------------------------------------------------
-//One event object with params to use in Day
-//----------------------------------------------------------------------------
-var CalendarEvent = (function () {
-    function CalendarEvent(startData, endData, description) {
-        this.startData = startData;
-        this.endData = endData;
-        this.description = description ? description : '';
-    }
-    //
-    CalendarEvent.prototype.getHtml = function () {
-        var ans = "<div class=\"os-event\"><div class=\"os-title\">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class=\"os-resize\"></div>        <div class=\"os-controlls\">        <a href=\"#\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></a>        <a href=\"#\"><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i></a><a class=\"os-remove\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></div></div>";
-        console.log({ "m": this.calc(this.startData), "h": this.calc(this.endData) - this.calc(this.startData) });
-        console.log(ans);
-    };
-    CalendarEvent.prototype.calc = function (time) {
-        var hours = time.getHours() - PositionProvider_1.PositionProvider.minValue;
-        var mins = time.getMinutes() - time.getMinutes() % 5;
-        var stepi = PositionProvider_1.PositionProvider.stepHeight / 60;
-        return Math.round(hours * PositionProvider_1.PositionProvider.stepHeight + mins * stepi);
-    };
-    return CalendarEvent;
-}());
-exports.CalendarEvent = CalendarEvent;
-
-},{"./PositionProvider":2}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 /**
  * Created by Oshevchuk on 13.07.2017.
@@ -133,92 +253,23 @@ exports.CalendarEvent = CalendarEvent;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as $ from 'jquery';
-var PositionProvider_1 = require("./PositionProvider");
-var calendarEvent_1 = require("./calendarEvent");
-var DateProvide_1 = require("./DateProvide");
-var positionProvider;
-var day = [];
-var provide;
+var calendar_1 = require("./calendar/calendar");
+var calendar;
 $(function () {
-    positionProvider = new PositionProvider_1.PositionProvider($('.os-dhx-holder'), 8, 21, 5);
-    day.push(new calendarEvent_1.CalendarEvent(new Date('2017-08-09T08:30:00'), new Date('2017-08-09T12:27:00'), 'text event'));
-    ShowEvents();
-    $('.os-dhx-holder').droppable();
-    $('.os-event').draggable({
-        containment: '#os-root',
-        axis: "y",
-        drag: function (event, ui) {
-            positionProvider.getValue($(this));
-            ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
-        }
-    }).resizable({
-        containment: '#os-root',
-        resize: function (event, ui) {
-            positionProvider.getValue($(this));
-            // ui.size.width = ui.originalSize.width;
-            $(this).css('width', '');
-        }
-    });
-    provide = new DateProvide_1.DateProvide(new Date());
-    provide.ShowHeaders();
+    calendar = new calendar_1.osCalendar();
+    // provide = new DateProvide(new Date());
+    // provide.ShowHeaders();
     // provide.ShowHeaders();
     // provide.NextWeek(); п
     // provide.NextWeek();
     // provide.ShowHeaders();
-    // console.log(1);
-    $('.os-dhx-holder').dblclick(function (e) {
-        $('.os-modal-overlay').fadeIn(400);
-        // console.log($(event.target.hash).parent(), $(e.target).parent());
-        $(e.target).append(' <div class="os-event">            <div class="os-title">03:05-04:55</div>        <span>Test mission for mission is imposible to posible</span>        <div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a>       <a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a>            </div>            </div>')
-            .find('.os-event')
-            .draggable({
-            containment: '#os-root',
-            axis: "y",
-            drag: function (event, ui) {
-                positionProvider.getValue($(this));
-                ui.position.top = ui.position.top < 0 ? 0 : ui.position.top;
-            }
-        }).resizable({
-            containment: '#os-root',
-            resize: function (event, ui) {
-                positionProvider.getValue($(this));
-                $(this).css('width', '');
-            }
-        })
-            .css({ "top": e.offsetY });
-    });
 });
-function ShowEvents() {
-    var contain = $('.os-dhx-holder')[0];
-    // console.log(contain);
-    day.forEach(function (a, b) {
-        var pos = positionProvider.getPositionFromTime(a);
-        $(contain).append('<div class="os-event"><div class="os-title">03:05-04:55</div><span>Test mission for mission is imposible to posible</span><div class="os-resize"></div>        <div class="os-controlls">        <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>        <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i></a><a class="os-remove"><i class="fa fa-trash" aria-hidden="true"></i></a></div></div>')
-            .find('.os-event')
-            .css({ 'top': pos.m + "px", 'height': pos.h });
-        a.getHtml();
-        console.log(pos);
-    });
-}
-$('.os-dhx-holder').on('click', '.os-remove', function (e) {
-    $(this).parent().parent().remove();
-});
-$('.os-dhx-holder').on('click', '.os-event', function (e) {
-    // console.log(this);
-    $('.os-event').draggable('disable');
-    $('.os-controlls').hide();
-    $(this).find('.os-controlls').show();
-    $(this).draggable('enable');
-});
-$('.os-close-modal').on('click', function () {
-    $('.os-modal-overlay').fadeOut(400);
-});
+// $(".er").show();
 function nextWeek() {
-    provide.NextWeek();
+    calendar.nextWeek();
 }
 function prevWeek() {
-    provide.NextWeek(-1);
+    calendar.prevWeek();
 }
-$(".er").show();
 
-},{"./DateProvide":1,"./PositionProvider":2,"./calendarEvent":3}]},{},[4]);
+},{"./calendar/calendar":2}]},{},[6]);

@@ -2,8 +2,8 @@
 //Provide object position on container and returns offset value
 //between min - max
 //----------------------------------------------------------------------------
-import {CalendarEvent} from "./calendarEvent";
-export class PositionProvider {
+import {osEvent} from "./event";
+export class osPositionProvider {
     public container:any;
     static minValue:number;
     static maxValue:number;
@@ -19,13 +19,13 @@ export class PositionProvider {
         this.containerHeight = this.container.height();
         this.containerOffset = this.container.offset();
 
-        PositionProvider.minValue = minValue ? minValue : 0;
-        PositionProvider.maxValue = maxValue ? maxValue : 0;
+        osPositionProvider.minValue = minValue ? minValue : 0;
+        osPositionProvider.maxValue = maxValue ? maxValue : 0;
         this.step = step ? step : 1;
 
-        this.timespan = PositionProvider.maxValue - PositionProvider.minValue + 1;
+        this.timespan = osPositionProvider.maxValue - osPositionProvider.minValue + 1;
 
-        PositionProvider.stepHeight = this.containerHeight / this.timespan;
+        osPositionProvider.stepHeight = this.containerHeight / this.timespan;
     }
 
     // todo : calendarEvent
@@ -37,7 +37,7 @@ export class PositionProvider {
 
     //todo: grid position by 5min(fixed)
     private getTimeFromValue(objOffset):string {
-        var res = this.timespan * objOffset / this.containerHeight + PositionProvider.minValue;
+        var res = this.timespan * objOffset / this.containerHeight + osPositionProvider.minValue;
         var hours:number | string = Math.floor(res);
         hours = hours.toString().length > 1 ? hours : "0" + hours.toString();
         var min:number | string = Math.floor((res - <number>hours) * 60);
@@ -46,25 +46,15 @@ export class PositionProvider {
         return hours + ":" + min;
     }
 
-    getPositionFromTime(time:CalendarEvent) {
-        // var hours=time.startData.getHours()-this.minValue;
-        // var mins=time.startData.getMinutes()-time.startData.getMinutes()%5;
-        //
-        // var stepi=this.stepHeight/60;
-
-        // console.log(this.calc(time.startData), this.calc(time.endData));
-
-
-        // return { 'm': hours*this.stepHeight+mins*stepi, "h": 20};
-
+    getPositionFromTime(time:osEvent) {
         return {"m": this.calc(time.startData), "h": this.calc(time.endData)-this.calc(time.startData)};
     }
 
     private calc(time) {
-        var hours = time.getHours() - PositionProvider.minValue;
+        var hours = time.getHours() - osPositionProvider.minValue;
         var mins = time.getMinutes() - time.getMinutes() % 5;
-        var stepi = PositionProvider.stepHeight / 60;
+        var stepi = osPositionProvider.stepHeight / 60;
 
-        return hours * PositionProvider.stepHeight + mins * stepi;
+        return hours * osPositionProvider.stepHeight + mins * stepi;
     }
 }

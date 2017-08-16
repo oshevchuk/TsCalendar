@@ -15,6 +15,7 @@
     "src/js/DateProvide.ts",
     "src/js/calendar/calendar.ts",
     "src/js/calendar/day.ts",
-    "src/js/calendar/event.ts"
+    "src/js/calendar/event.ts",
+    "src/js/calendar/positionProvider.ts"
   ]
 }

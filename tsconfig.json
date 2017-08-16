@@ -12,6 +12,9 @@
     "src/js/main.ts",
     "src/js/PositionProvider.ts",
     "src/js/Day.ts",
-    "src/js/DateProvide.ts"
+    "src/js/DateProvide.ts",
+    "src/js/calendar/calendar.ts",
+    "src/js/calendar/day.ts",
+    "src/js/calendar/event.ts"
   ]
 }

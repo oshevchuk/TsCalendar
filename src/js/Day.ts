@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------------
 
     import  {CalendarEvent} from './calendarEvent';
+
 export class Day {
     start:number = 9;
     end:number = 18;

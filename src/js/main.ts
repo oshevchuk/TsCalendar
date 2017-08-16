@@ -18,6 +18,7 @@ var provide:DateProvide;
 
 $(function () {
 
+
     positionProvider = new PositionProvider($('.os-dhx-holder'), 8, 21, 5);
     day.push(new CalendarEvent(
         new Date('2017-08-09T08:30:00'),
